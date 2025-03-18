@@ -40,7 +40,9 @@ def get_page_hash(url):
         print("Error fetching page:", e)
         return None
 
-def main(debug=False):
+def main(debug=False, verbose=False):
+    counter = 0
+
     last_hash = get_page_hash(SOURCE_URL)
     if last_hash is None:
         print("Initial fetch failed. Exiting.")
@@ -57,6 +59,14 @@ def main(debug=False):
             last_hash = current_hash
             break  # Exit the loop after sending the notification
         else:
+            counter += 1
+            if verbose:
+                if counter % 300 == 0:
+                    send_push_notification(f"Still monitoring the webpage for updates. {counter} checks made.")
+                    continue
+                if counter % 10 == 0:
+                    print(f'Checked {counter} times. No update detected.')
+                    continue
             if debug:
                 print(f'No update detected. Current hash: {current_hash}, Last hash: {last_hash}')
                 continue

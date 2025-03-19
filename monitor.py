@@ -10,6 +10,9 @@ load_dotenv()  # Load environment variables from .env file
 SOURCE_URL = os.getenv('SOURCE_URL') 
 CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', 60))  # Interval in seconds between checks, default to 60 if not set
 
+DEBUG_MODE = os.getenv('DEBUG_MODE', 'False').lower() == 'true'  # Set to True to enable debug mode
+PULSE_CHECK = os.getenv('PULSE_CHECK', 'False').lower() == 'true'  # Set to True to enable pulse check mode
+
 # Pushover settings
 PUSHOVER_TOKEN = os.getenv('PUSHOVER_TOKEN')  # Replace with your Pushover API token
 PUSHOVER_USER = os.getenv('PUSHOVER_USER')    # Replace with your Pushover user key
@@ -40,7 +43,7 @@ def get_page_hash(url):
         print("Error fetching page:", e)
         return None
 
-def main(debug=False, pulseCheck=False):
+def main(debug=DEBUG_MODE, pulseCheck=PULSE_CHECK):
     # Initialize the counter
     counter = 0
 

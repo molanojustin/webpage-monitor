@@ -1,6 +1,7 @@
 import requests
 import time
 import hashlib
+import argparse
 import os
 from dotenv import load_dotenv
 
@@ -44,21 +45,31 @@ def get_page_hash(url):
         return None
 
 def main(debug=DEBUG_MODE, pulseCheck=PULSE_CHECK):
+
+    parser = argparse.ArgumentParser(description='Monitor a webpage for changes.')
+    parser.add_argument('--url', type=str, help='URL of the webpage to monitor')
+    args = parser.parse_args()
+
+    source_url = args.url if args.url else SOURCE_URL
+    if not source_url:
+        print("Error: No source URL provided. Please set SOURCE_URL in the .env file or pass it via --url.")
+        return
+    
     # Initialize the counter
     counter = 0
 
-    last_hash = get_page_hash(SOURCE_URL)
+    last_hash = get_page_hash(source_url)
     if last_hash is None:
         print("Initial fetch failed. Exiting.")
         return
 
     while True:
         time.sleep(CHECK_INTERVAL)
-        current_hash = get_page_hash(SOURCE_URL)
+        domain = source_url.split("www.")[-1].split(".com")[0] + ".com"
+        current_hash = get_page_hash(source_url)
         if current_hash is None:
             continue  # Skip this iteration if there was an error
         if current_hash != last_hash:
-            domain = SOURCE_URL.split("www.")[-1].split(".com")[0] + ".com"
             send_push_notification(f"The webpage at {domain} has been updated.")
             last_hash = current_hash
             break  # Exit the loop after sending the notification
@@ -79,7 +90,7 @@ def main(debug=DEBUG_MODE, pulseCheck=PULSE_CHECK):
             elif debug:
                 print(f'Search no.: {counter}. Current hash: {current_hash}, Last hash: {last_hash}')
                 continue
-            print("No update detected.")
+            print(f"No update detected at {domain}")
 
 if __name__ == '__main__':
     main()

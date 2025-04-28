@@ -1,11 +1,13 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
-version: 2
+version: 3
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # 1) Poetry-managed dependencies: sees only pyproject.toml + poetry.lock
+  - package-ecosystem: pip
+    directory: "/"            # root only has pyproject.toml + poetry.lock
     schedule:
-      interval: "weekly"
+      interval: daily
+
+  # 2) requirements.txt-only updates: sees only the .txt
+  - package-ecosystem: pip
+    directory: "/reqs"        # move requirements.txt → reqs/requirements.txt
+    schedule:
+      interval: daily

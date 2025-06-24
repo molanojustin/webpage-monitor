@@ -4,10 +4,4 @@ updates:
   - package-ecosystem: pip
     directory: "/"            # root only has pyproject.toml + poetry.lock
     schedule:
-      interval: daily
-
-  # 2) requirements.txt-only updates: sees only the .txt
-  - package-ecosystem: pip
-    directory: "/reqs"        # move requirements.txt → reqs/requirements.txt
-    schedule:
-      interval: daily
+      interval: weekly

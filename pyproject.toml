@@ -8,12 +8,12 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "requests (>=2.32.3,<3.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
     "python-dotenv (>=1.0.1,<2.0.0)",
     "argparse (>=1.4.0,<2.0.0)",
     "certifi (>=2025.4.26,<2026.0.0)",
     "idna (>=3.10,<4.0)",
-    "urllib3 (>=2.3.0,<3.0.0)"
+    "urllib3 (>=2.5.0,<3.0.0)"
 ]
 
 [tool.poetry]
